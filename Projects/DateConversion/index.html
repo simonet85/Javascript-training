@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <p id="time"></p>
+    <script> 
+        class Converter{
+
+            // D'ou viens ceci ===> units = euDate.getKnownUnits() dans le prototype de la fonction 
+            // ["days", "hours", "minutes", "seconde"]
+
+            getKnownUnits(days ='', hours='', minutes='',seconde='') {
+                return [days, hours, minutes,seconde]
+            }
+          
+             secondsToHuman(seconds, units = this.getKnownUnits("days","hours", "minutes", "seconde")){
+                // console.log(units[0])
+                let totalSeconds = seconds;
+                this.hours = Math.floor(totalSeconds / 3600);
+                totalSeconds %= 3600;
+                this.minutes = Math.floor(totalSeconds / 60);
+                seconds = totalSeconds % 60;
+                
+                const output = `${this.hours} ${units[1]}  ${this.minutes} ${units[2]} ${seconds} ${units[3]} `
+                
+                document.querySelector("p#time").innerHTML = output
+            }
+          
+        }
+        const converter = new Converter()
+        converter.secondsToHuman(28565)
+        
+    </script>
+</body>
+</html>

@@ -1,8 +1,8 @@
 class GitHub{
     constructor(){
         //Inititializing 
-        this.client_id = "YOUR_GITHUB_CLIENT" //https://github.com/settings/applications/new
-        this.client_secret ="YOUR_GITHUB_SECRET"
+        this.client_id = "7019069d99722ae02675"
+        this.client_secret ="7a2bb391cfb163a89604d4983eb8dc7f69feb81b"
         this.repos_count = 5
         this.repos_sort = 'created: asc'
     }
