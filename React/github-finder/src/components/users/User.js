@@ -1,16 +1,20 @@
 import React, { Fragment, Component } from 'react';
 import Spinner from './../layouts/Spinner';
+import Repos from './../repos/Repos';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 class User extends Component {
   componentDidMount() {
     this.props.getUser(this.props.match.params.login);
+    this.props.getUserRepos(this.props.match.params.login);
   }
 
   static propTypes = {
     getUser: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     loading: PropTypes.bool,
+    getUserRepos: PropTypes.func.isRequired,
+    repos: PropTypes.array.isRequired,
   };
   render() {
     const {
@@ -29,7 +33,7 @@ class User extends Component {
       hireable,
     } = this.props.user;
 
-    const { loading } = this.props;
+    const { loading, repos } = this.props;
 
     if (loading) return <Spinner />;
     return (
@@ -94,12 +98,13 @@ class User extends Component {
             </ul>
           </div>
         </div>
-        <card className='text-center'>
+        <div className='text-center'>
           <div className='badge badge-primary'>Followers: {followers}</div>
           <div className='badge badge-success'>Following: {following}</div>
-          <div className='badge badge-ligth'>Public Repos: {public_repos}</div>
+          <div className='badge badge-light'>Public Repos: {public_repos}</div>
           <div className='badge badge-dark'>Public Gists: {public_gists}</div>
-        </card>
+        </div>
+        <Repos repos={repos} />
       </Fragment>
     );
   }
