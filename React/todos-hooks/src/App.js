@@ -5,11 +5,7 @@ import './App.css';
 
 // Initialise initialState
 const initialState = {
-  todos: [
-    { id: 1, text: 'finishing writing hooks chapter' },
-    { id: 2, text: 'Play with kids' },
-    { id: 3, text: 'read bible' },
-  ],
+  todos: [],
 };
 
 //Create the centralized store
@@ -29,6 +25,8 @@ function App() {
 
 function reducer(state, action) {
   switch (action.type) {
+    case 'get':
+      return { ...state, todos: action.payload };
     case 'delete':
       const filteredTodoState = state.todos.filter(
         (todo) => todo.id !== action.payload.id
@@ -37,9 +35,9 @@ function reducer(state, action) {
 
     case 'add':
       //add new todo onto array
-      const newTodo = { id: uuidv4(), text: action.payload };
+      // const newTodo = { id: uuidv4(), text: action.payload };
       //spread our state and assign todos
-      const addedTodos = [...state.todos, newTodo];
+      const addedTodos = [...state.todos, action.payload];
 
       return { ...state, todos: addedTodos }; //Return a new array
 
