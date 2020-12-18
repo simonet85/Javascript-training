@@ -12,6 +12,7 @@ const initialState = {
 export const TodosContext = React.createContext();
 
 function App() {
+  //Initialize reducer
   const [state, dispatch] = useReducer(reducer, initialState);
   return (
     // we make use of TodosContext to make state and dispatch available to child components
