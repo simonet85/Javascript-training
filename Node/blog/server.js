@@ -13,6 +13,7 @@ const loginController = require('./controllers/login');
 const loginUserController = require('./controllers/loginUser');
 const expressSession = require('express-session');
 const authMiddleware = require('./middleware/authMiddleware');
+const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware');
 const ejs = require('ejs');
 
 const getPost = require('./controllers/getPost');
@@ -39,13 +40,21 @@ app.get('/', homeController);
 
 app.get('/posts/new', authMiddleware, newPostController);
 //Navigate to register page
-app.get('/auth/register', newUserController);
+app.get('/auth/register', redirectIfAuthenticatedMiddleware, newUserController);
 //Store user data
-app.post('/users/register', storeUserController);
+app.post(
+  '/users/register',
+  redirectIfAuthenticatedMiddleware,
+  storeUserController
+);
 //User Login
-app.get('/auth/login', loginController);
+app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController);
 //Logged user in
-app.post('/users/login', loginUserController);
+app.post(
+  '/users/login',
+  redirectIfAuthenticatedMiddleware,
+  loginUserController
+);
 //Saving Posts to the Database
 app.post('/posts/store', authMiddleware, storePostController);
 

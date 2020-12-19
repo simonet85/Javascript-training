@@ -1,4 +1,3 @@
-const { nextTick } = require('process');
 const User = require('../models/User');
 
 module.exports = (req, res) => {
