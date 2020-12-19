@@ -7,6 +7,8 @@ const newPostController = require('./controllers/newPost');
 const homeController = require('./controllers/home');
 const storePostController = require('./controllers/storePost');
 const getPostController = require('./controllers/getPost');
+const newUserController = require('./controllers/newUser');
+const storeUserController = require('./controllers/storeUser');
 const ejs = require('ejs');
 
 const getPost = require('./controllers/getPost');
@@ -28,6 +30,10 @@ app.set('views', __dirname + '/views');
 app.get('/', homeController);
 
 app.get('/posts/new', newPostController);
+//Navigate to register page
+app.get('/auth/register', newUserController);
+//Store user data
+app.post('/users/register', storeUserController);
 
 //Applying a middleare to a particular route
 app.use('/posts/store', validationMiddleware);
