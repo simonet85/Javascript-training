@@ -12,6 +12,7 @@ const storeUserController = require('./controllers/storeUser');
 const loginController = require('./controllers/login');
 const loginUserController = require('./controllers/loginUser');
 const expressSession = require('express-session');
+const authMiddleware = require('./middleware/authMiddleware');
 const ejs = require('ejs');
 
 const getPost = require('./controllers/getPost');
@@ -36,7 +37,7 @@ app.set('views', __dirname + '/views');
 
 app.get('/', homeController);
 
-app.get('/posts/new', newPostController);
+app.get('/posts/new', authMiddleware, newPostController);
 //Navigate to register page
 app.get('/auth/register', newUserController);
 //Store user data
@@ -46,7 +47,7 @@ app.get('/auth/login', loginController);
 //Logged user in
 app.post('/users/login', loginUserController);
 //Saving Posts to the Database
-app.post('/posts/store', storePostController);
+app.post('/posts/store', authMiddleware, storePostController);
 
 app.get('/post/:id', getPostController);
 

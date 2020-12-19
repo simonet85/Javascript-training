@@ -9,7 +9,9 @@ module.exports = (req, res) => {
       bcrypt.compare(password, user.password, (error, same) => {
         if (same) {
           //If password match
-          //Store user ession
+          //Store user session start
+          req.session.userId = user._id;
+          //Store user session ends
           res.redirect('/');
         } else {
           res.redirect('/auth/login');
