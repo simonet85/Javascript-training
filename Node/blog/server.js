@@ -11,6 +11,7 @@ const newUserController = require('./controllers/newUser');
 const storeUserController = require('./controllers/storeUser');
 const loginController = require('./controllers/login');
 const loginUserController = require('./controllers/loginUser');
+const expressSession = require('express-session');
 const ejs = require('ejs');
 
 const getPost = require('./controllers/getPost');
@@ -27,6 +28,8 @@ app.use(express.static('./public'));
 app.use(fileUpload());
 //Applying a middleare to a particular route
 app.use('/posts/store', validationMiddleware);
+//Applying the express session
+app.use(expressSession({ secret: 'keyboard cat' }));
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
