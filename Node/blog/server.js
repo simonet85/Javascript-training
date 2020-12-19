@@ -9,6 +9,7 @@ const storePostController = require('./controllers/storePost');
 const getPostController = require('./controllers/getPost');
 const newUserController = require('./controllers/newUser');
 const storeUserController = require('./controllers/storeUser');
+const loginController = require('./controllers/login');
 const ejs = require('ejs');
 
 const getPost = require('./controllers/getPost');
@@ -34,7 +35,8 @@ app.get('/posts/new', newPostController);
 app.get('/auth/register', newUserController);
 //Store user data
 app.post('/users/register', storeUserController);
-
+//User Login
+app.get('/auth/login', loginController);
 //Applying a middleare to a particular route
 app.use('/posts/store', validationMiddleware);
 
