@@ -10,6 +10,7 @@ const getPostController = require('./controllers/getPost');
 const newUserController = require('./controllers/newUser');
 const storeUserController = require('./controllers/storeUser');
 const loginController = require('./controllers/login');
+const loginUserController = require('./controllers/loginUser');
 const ejs = require('ejs');
 
 const getPost = require('./controllers/getPost');
@@ -24,6 +25,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('./public'));
 app.use(fileUpload());
+//Applying a middleare to a particular route
+app.use('/posts/store', validationMiddleware);
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
@@ -37,9 +40,8 @@ app.get('/auth/register', newUserController);
 app.post('/users/register', storeUserController);
 //User Login
 app.get('/auth/login', loginController);
-//Applying a middleare to a particular route
-app.use('/posts/store', validationMiddleware);
-
+//Logged user in
+app.post('/users/login', loginUserController);
 //Saving Posts to the Database
 app.post('/posts/store', storePostController);
 
