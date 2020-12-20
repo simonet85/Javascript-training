@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const fileUpload = require('express-fileupload');
 const connectDB = require('./config/db');
 const bodyParser = require('body-parser');
@@ -14,6 +15,7 @@ const loginUserController = require('./controllers/loginUser');
 const expressSession = require('express-session');
 const authMiddleware = require('./middleware/authMiddleware');
 const redirectIfAuthenticatedMiddleware = require('./middleware/redirectIfAuthenticatedMiddleware');
+const connectMongo = require('connect-mongo');
 const ejs = require('ejs');
 
 const getPost = require('./controllers/getPost');
@@ -31,16 +33,26 @@ app.use(fileUpload());
 //Applying a middleare to a particular route
 app.use('/posts/store', validationMiddleware);
 //Applying the express session
-app.use(expressSession({ secret: 'keyboard cat' }));
+const mongoStore = connectMongo(expressSession);
+app.use(
+  expressSession({
+    secret: 'keyboard cat',
+    resave: true,
+    saveUninitialized: true,
+    store: new mongoStore({
+      mongooseConnection: mongoose.connection,
+    }),
+  })
+);
 
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
 app.get('/', homeController);
 
-app.get('/posts/new', authMiddleware, newPostController);
+app.get('/posts/new', newPostController);
 //Navigate to register page
-app.get('/auth/register', redirectIfAuthenticatedMiddleware, newUserController);
+app.get('/auth/register', newUserController);
 //Store user data
 app.post(
   '/users/register',
@@ -48,15 +60,11 @@ app.post(
   storeUserController
 );
 //User Login
-app.get('/auth/login', redirectIfAuthenticatedMiddleware, loginController);
+app.get('/auth/login', loginController);
 //Logged user in
-app.post(
-  '/users/login',
-  redirectIfAuthenticatedMiddleware,
-  loginUserController
-);
+app.post('/users/login', loginUserController);
 //Saving Posts to the Database
-app.post('/posts/store', authMiddleware, storePostController);
+app.post('/posts/store', storePostController);
 
 app.get('/post/:id', getPostController);
 
